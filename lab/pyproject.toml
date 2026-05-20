@@ -1,0 +1,25 @@
+[project]
+name = "Machine-Translation"
+version = "0.1.0"
+description = "Modeling translation from Arabic to English."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "accelerate>=1.13.0",
+    "bitsandbytes>=0.49.2",
+    "clean-text>=0.7.1",
+    "datasets>=4.8.5",
+    "evaluate>=0.4.6",
+    "google-genai>=2.0.1",
+    "matplotlib>=3.10.9",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.2",
+    "pyarabic>=0.6.15",
+    "sacrebleu>=2.6.0",
+    "sacremoses>=0.1.1",
+    "sentencepiece>=0.2.1",
+    "transformers>=5.8.0",
+    "triton-windows>=3.6.0.post26",
+    "unidecode>=1.4.0",
+    "wandb>=0.26.1",
+]
