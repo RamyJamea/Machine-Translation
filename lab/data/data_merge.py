@@ -43,12 +43,12 @@ def normalize_arabic(text):
     return text
 
 
-old_dataset = load_dataset("ramyibrahim/holol-ar-en-mt-v2", split="train")
+old_dataset = load_dataset("ramyibrahim/cniomt-ar-en-v5", split="train")
 
 old_df = old_dataset.to_pandas()
 old_df = old_df[["en", "ar"]]
 
-df = pd.read_csv(r"C:\Users\ramyu\OneDrive\Desktop\MachineT\lab\data\data-v5.csv")
+df = pd.read_csv(r"C:\Users\ramyu\code\MachineT\data_05_21_2026_v3.csv")
 print(df.head())
 df = df[["en", "ar"]]
 df["en"] = df["en"].apply(normalize_english)
@@ -66,6 +66,6 @@ final_df.reset_index(drop=True, inplace=True)
 
 hf_dataset = Dataset.from_pandas(final_df, preserve_index=False)
 print(hf_dataset)
-hf_dataset.push_to_hub("ramyibrahim/holol-ar-en-mt-v3", private=False)
+hf_dataset.push_to_hub("ramyibrahim/cniomt-ar-en-v6", private=False)
 
 print("Dataset uploaded successfully!")
