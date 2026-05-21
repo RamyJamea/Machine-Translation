@@ -15,6 +15,7 @@ dependencies = [
     "openpyxl>=3.1.5",
     "pandas>=3.0.2",
     "pyarabic>=0.6.15",
+    "pydantic-settings>=2.14.1",
     "sacrebleu>=2.6.0",
     "sacremoses>=0.1.1",
     "sentencepiece>=0.2.1",

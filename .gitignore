@@ -7,10 +7,7 @@ __pycache__/
 *.so
 
 # Custom
-lab/.models
-lab/.data
-lab/wandb
-lab/.tokenizers
+.outputs
 
 # Distribution / packaging
 .Python
