@@ -70,10 +70,6 @@ training_args = Seq2SeqTrainingArguments(
     predict_with_generate=train_config["predict_with_generate"],
     run_name=train_config["run_name"],
     report_to=train_config["report_to"],
-    hub_model_id=train_config["hub_model_id"] + train_config["run_name"],
-    push_to_hub=train_config["push_to_hub"],
-    hub_strategy=train_config["hub_strategy"],
-    hub_private_repo=train_config["hub_private_repo"],
 )
 
 trainer = Seq2SeqTrainer(
