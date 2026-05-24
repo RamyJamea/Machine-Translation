@@ -1,5 +1,5 @@
 model:
-  provider: "opus"
+  provider: "lfm2.5"
   model: "LiquidAI/LFM2.5-350M"
   tokenizer: "LiquidAI/LFM2.5-350M"
   max_length: 256
@@ -15,8 +15,8 @@ data:
 
 train:
   num_train_epochs: 3
-  per_device_train_batch_size: 16
-  per_device_eval_batch_size: 16
+  per_device_train_batch_size: 8
+  per_device_eval_batch_size: 8
 
   logging_strategy: "epoch"
   eval_strategy: "epoch"
@@ -37,5 +37,4 @@ train:
   predict_with_generate: True
 
   report_to: "wandb"
-  run_name: "cniomt-ar-en-350B"
-
+  run_name: "cniomt-ar-en-350M"

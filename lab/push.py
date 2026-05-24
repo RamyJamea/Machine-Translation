@@ -7,7 +7,7 @@ login(SETTINGS.HUGGINGFACE_TOKEN)
 
 LOCAL_CHECKPOINT_PATH = r".\.outputs\cniomt-ar-en-70B\checkpoint-9927"
 ORIGINAL_MODEL_BASE = "Helsinki-NLP/opus-mt-ar-en"
-HF_REPO_ID = "ramyibrahim/cniomt-ar-en-70B"
+HF_REPO_ID = "ramyibrahim/cniomt-ar-en-70M"
 
 print("Loading fine-tuned model checkpoint...")
 model = MarianMTModel.from_pretrained(LOCAL_CHECKPOINT_PATH)

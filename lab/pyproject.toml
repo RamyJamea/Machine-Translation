@@ -21,6 +21,7 @@ dependencies = [
     "sentencepiece>=0.2.1",
     "transformers>=5.8.0",
     "triton-windows>=3.6.0.post26",
+    "trl>=1.4.0",
     "unidecode>=1.4.0",
     "wandb>=0.26.1",
 ]

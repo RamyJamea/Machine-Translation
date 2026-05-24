@@ -65,3 +65,46 @@ class DataPreprocess:
             and len(example["labels"]) <= max_length
         )
         return filtered
+
+    def formate_messages(self, dataset):
+        def format_example(example):
+            return {
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are a professional Arabic to English translator.",
+                    },
+                    {"role": "user", "content": example["ar"]},
+                    {"role": "assistant", "content": example["en"]},
+                ]
+            }
+
+        formated = dataset.map(format_example)
+        cleaned = formated.remove_columns(
+            [col for col in dataset.column_names if col != "messages"]
+        )
+        return cleaned
+
+    def tokenize_examples(self, tokenizer, split, max_length: int):
+        def __tokenize(example):
+            text = tokenizer.apply_chat_template(
+                example["messages"],
+                tokenize=False,
+                add_generation_prompt=False,
+            )
+
+            tokens = tokenizer(
+                text,
+                max_length=max_length,
+                truncation=True,
+                padding=False,
+            )
+
+            tokens["labels"] = tokens["input_ids"].copy()
+            return tokens
+
+        tokenized = split.map(
+            __tokenize,
+            remove_columns=split.column_names,
+        )
+        return tokenized

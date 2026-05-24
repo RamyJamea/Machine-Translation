@@ -1,13 +1,13 @@
 import yaml, wandb
 from huggingface_hub import login
 from transformers import DataCollatorForSeq2Seq
-from transformers import Seq2SeqTrainingArguments, Seq2SeqTrainer, EarlyStoppingCallback
+from trl import SFTTrainer, SFTConfig
 from ..config import get_settings
 from .model import MT
 from .prepare import DataPreprocess
-from .metrics import compute_metrics
+from .eval import evaluate_on_test_set
 
-CONFIG_PATH = r"C:\Users\ramyu\code\MachineT\lab\train\config_opus_v1.yml"
+CONFIG_PATH = r"C:\Users\ramyu\code\MachineT\lab\train\config_lfm2.5.yml"
 SETTINGS = get_settings()
 wandb.login(SETTINGS.WANDB_API_KEY)
 login(SETTINGS.HUGGINGFACE_TOKEN)
@@ -21,13 +21,14 @@ with open(CONFIG_PATH) as f:
 
 preprocessor = DataPreprocess(data_config)
 dataset = preprocessor.init_dataset()
-splits = preprocessor.split_dataset(dataset)
-train_dataset = preprocessor.tokenize_split(
+formatted = preprocessor.formate_messages(dataset)
+splits = preprocessor.split_dataset(formatted)
+train_dataset = preprocessor.tokenize_examples(
     MT.tokenizer,
     splits["train"],
     model_config["max_length"],
 )
-test_dataset = preprocessor.tokenize_split(
+test_dataset = preprocessor.tokenize_examples(
     MT.tokenizer,
     splits["test"],
     model_config["max_length"],
@@ -48,7 +49,7 @@ training_steps = (
     // (train_config["per_device_train_batch_size"])
 )
 
-training_args = Seq2SeqTrainingArguments(
+training_args = SFTConfig(
     output_dir=f".outputs/{train_config['run_name']}",
     num_train_epochs=train_config["num_train_epochs"],
     per_device_train_batch_size=train_config["per_device_train_batch_size"],
@@ -67,25 +68,24 @@ training_args = Seq2SeqTrainingArguments(
     max_grad_norm=train_config["max_grad_norm"],
     warmup_steps=training_steps * train_config["warmup_ratio"],
     lr_scheduler_type=train_config["lr_scheduler_type"],
-    predict_with_generate=train_config["predict_with_generate"],
     run_name=train_config["run_name"],
     report_to=train_config["report_to"],
 )
 
-trainer = Seq2SeqTrainer(
+trainer = SFTTrainer(
     model=MT.model,
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=test_dataset,
     processing_class=MT.tokenizer,
     data_collator=collator,
-    compute_metrics=compute_metrics,
-    callbacks=[
-        EarlyStoppingCallback(
-            early_stopping_patience=train_config["early_stopping"],
-            early_stopping_threshold=0.0,
-        )
-    ],
 )
 
 trainer.train()
+
+test_results = evaluate_on_test_set(
+    trainer=trainer,
+    test_split=splits["test"],
+    tokenizer=MT.tokenizer,
+    max_new_tokens=model_config["max_length"],
+)

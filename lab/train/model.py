@@ -3,7 +3,7 @@ from huggingface_hub import login
 from ..config import get_settings
 from .mt import FactoryMT
 
-CONFIG_PATH = r"C:\Users\ramyu\code\MachineT\lab\train\config_opus_v1.yml"
+CONFIG_PATH = r"C:\Users\ramyu\code\MachineT\lab\train\config_lfm2.5.yml"
 CACHE_DIR = r"./cache"
 SETTINGS = get_settings()
 login(SETTINGS.HUGGINGFACE_TOKEN)
